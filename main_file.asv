@@ -1,0 +1,230 @@
+addpath('/home/amay/Work/S9_ENIB/Intelligent Decision Support Systems/Assignement 1/');
+clc; clear; close all;
+%run('circles.m');
+%disp(computeCircle);
+
+function [x, y] = computeCircle(center, radius, np)
+    
+    theta = linspace(0, 2*pi, np); % Generate points for the circle
+    x = center(1) + radius * cos(theta);
+    y = center(2) + radius * sin(theta);
+
+end
+
+function plotCircle(center, cx, cy)
+    plot(cx, cy, 'b', 'LineWidth', 2); % Plot the circle
+    hold on;
+    plot(center(1), center(2), 'ro', 'MarkerSize', 8, 'MarkerFaceColor', 'r'); % Mark center
+    
+end
+
+function y_est = computeRadius(params, centers)   
+    y_est = zeros(size(centers(:,1)));
+    for i = 1:size(centers, 1)
+        %disp(centers(i, 1));
+        %disp(centers(i, 2));
+        y_est(i) = sqrt((params(1) - centers(i, 1))^2 + (params(2) - centers(i, 2))^2);
+    end
+end
+
+function errors = computeErrorsRadii(y_est, radii)
+    errors = zeros(size(y_est(:,1)));
+    for i = 1:size(y_est)
+        errors(i) = radii(i)^2 - y_est(i)^2;
+    end
+end
+
+function J = computeJacobian(u, params)
+   J = zeros(size(u,1), 2);
+   for i = 1:size(J(:,1))  % Loop over rows (3)
+        J(i, :) = [2*(params(1) - u(i, 1)) 2*(params(2) - u(i, 2))];
+   end
+end
+
+
+function delta_params = computeDeltaParams(residuals, J)
+    delta_params = pinv(J' * J) * J'* residuals ; %first step, without the error
+end
+
+function errors = computeErrors(residuals, J, delta_params)
+    errors = residuals - J * delta_params;
+end
+
+function errors = computeErrorsStream(radii, y_est, J, delta_params)
+    errors = computeErrorsRadii(y_est, radii) - J*delta_params;
+end
+
+function min_func = computeMinFunc(errors)
+    min_func = errors' * errors;
+end
+
+function g = computeG(J, errors)
+    g = 2 * J' * errors;
+end
+
+function nwparams = computeGN(params, step, J, errors)
+    nwparams = params - step*pinv(J' * J) * J' * errors;
+end
+
+function nwparams = computeLM(params, step, J, alpha, errors)
+    nwparams = params - step*pinv(J' * J + alpha*eye(size(J' * J))) * J' * errors;
+end
+
+function nwparams = computeWLM(params, step, J, alpha, errors, W)
+    nwparams = params - step*pinv(J' * W * J + alpha*eye(size(J' * J))) * J' * W *errors;
+end
+bs1_center = [1, 1];
+bs2_center = [10, 5];
+bs3_center = [2, 4];
+
+disp(ping_stolp_1);
+disp(ping_stolp_2);
+disp(ping_stolp_3);
+
+% x = linspace(0, 10, 100); % 100 points from 0 to 10
+%[bs1_x, bs1_y] = [0, 0];
+[bs1_x, bs1_y] = computeCircle(bs1_center, ping_stolp_1, 100);
+[bs2_x, bs2_y] = computeCircle(bs2_center, ping_stolp_2, 100);
+[bs3_x, bs3_y] = computeCircle(bs3_center, ping_stolp_3, 100);
+
+%print(y)
+plotCircle(bs1_center, bs1_x, bs1_y);
+plotCircle(bs2_center, bs2_x, bs2_y);
+plotCircle(bs3_center, bs3_x, bs3_y);
+grid on;
+%xlim([-30 30]);
+%ylim([-30 30]);
+xlabel('x');
+ylabel('f(x)');
+title('Plot of f(x)');
+
+% Initial parameters
+params_k0 = [10 1]';
+params_x = [];
+params_y = [];
+delta_params_k0 = [0 0]';
+errors_k0 = [0 0]';
+centers = [bs1_center;bs2_center;bs3_center];
+radii = [ping_stolp_1; ping_stolp_2; ping_stolp_3];
+weights = eye([3 3]);
+cumul_errors = zeros([3, 1]);
+cumul_var = [];
+
+% Algorithm parameters
+lambda = 0.001;  % Damping factor
+maxIter = 1500;  % Maximum number of iterations
+tolerance = 1e-6;  % Convergence tolerance
+iter_mat = [];
+error_iter = [];
+
+% ADAM Adaptative step size
+alpha = 0.01;
+beta1 = 0.9;
+beta2 = 0.999;
+epsilon = 1e-8;
+m = zeros(size(params_k0));
+v = zeros(size(params_k0));
+
+prev_error = inf;
+% Iterate to optimize the parameters
+for iter = 1:maxIter
+    
+    % Compute residuals
+    %radii = [ping_stolp_1; ping_stolp_2; ping_stolp_3];
+    y_est_k0 = computeRadius(params_k0, centers);
+    
+    % Compute the Jacobian matrix (derivatives of the residuals w.r.t. parameters)
+    J_k0 = computeJacobian(centers, params_k0);
+    epsilon = 1e-6;  % Small perturbation for numerical differentiation
+    
+    % Compute the Hessian approximation (J^T * J)
+    H = J_k0' * J_k0;
+    
+    
+    errors_k0 = computeErrorsStream(radii, y_est_k0, J_k0, delta_params_k0);
+    min_func_k0 = computeMinFunc(errors_k0);
+    cumul_errors = horzcat(cumul_errors, errors_k0);
+    cumul_var = horzcat(cumul_var, var(cumul_errors,0, 2));
+    %disp(cumul_var(:, iter));
+
+    %weights = diag(1 ./ cumul_var(:, iter) + 1e-6); 
+    weights = inv(cov(cumul_errors'));
+
+    disp(weights);
+    
+    % Compute the gradient (J^T * r)
+    grad = computeG(J_k0, errors_k0);
+    
+    % Update parameters using the Levenberg-Marquardt update rule
+    %params_k1 = computeGN(params_k0, -0.1, J_k0, errors_k0);
+    params_k1 = computeLM(params_k0, -alpha, J_k0, lambda, errors_k0);
+    %params_k1 = computeWLM(params_k0, -alpha, J_k0, lambda, errors_k0, weights);
+    delta_params_k0 = params_k1 - params_k0;
+    
+
+    params_x = cat(1, params_x, params_k1(1));
+    params_y = cat(1, params_y, params_k1(2));
+    
+    error_k1 = norm(errors_k0);
+    disp(error_k1)
+    iter_mat = cat(1, iter_mat, iter);
+    error_iter = cat(1, error_iter, prev_error - error_k1);
+    %{
+    if abs(prev_error - error_k1) < tolerance
+        disp(iter);
+        break;
+    end
+    %}
+    prev_error = error_k1;
+    
+    m = beta1 * m + (1 - beta1) * grad;
+    v = beta2 * v + (1 - beta2) * grad.^2;
+    
+    m_hat = m / (1 - beta1^iter);
+    v_hat = v / (1 - beta2^iter);
+    
+    params_k1 = params_k1 - (alpha * m_hat) ./ (sqrt(v_hat) + epsilon);
+
+    params_k0 = params_k1;
+end
+%{
+% Display results
+disp(['Optimized A: ', num2str(params(1))]);
+disp(['Optimized B: ', num2str(params(2))]);
+%}
+
+% Plot the results
+plot(params_x, params_y, '.','LineWidth',0.2); hold on;
+%plot(x, modelFun(params, x), 'b-', 'LineWidth', 2, 'DisplayName', 'Fitted Curve');
+grid on;
+
+figure;
+semilogy(iter_mat, error_iter, '.','LineWidth',0.2); hold on;
+%plot(x, modelFun(params, x), 'b-', 'LineWidth', 2, 'DisplayName', 'Fitted Curve');
+title("Error calculation");
+xlabel("n° iterations");
+grid on;
+%xlim([10 length(error_iter)]);
+legend();
+
+figure;
+semilogy(cumul_errors(1, :), 'LineWidth', 2); hold on;
+semilogy(cumul_errors(2, :), 'LineWidth', 2);
+semilogy(cumul_errors(3, :), 'LineWidth', 2);
+%plot(x, modelFun(params, x), 'b-', 'LineWidth', 2, 'DisplayName', 'Fitted Curve');
+grid on;
+title("Variance of each parameters");
+xlabel("n° iteration");
+ylabel("Variance")
+%xlim([10 length(error_iter)]);
+legend("Param 1", "Param 2", "Param 3");
+
+figure;
+semilogy(iter_mat, cumul_var, '.','LineWidth',0.2); hold on;
+%plot(x, modelFun(params, x), 'b-', 'LineWidth', 2, 'DisplayName', 'Fitted Curve');
+grid on;
+title("Variance of each parameters");
+xlabel("n° iteration");
+ylabel("Variance")
+%xlim([10 length(error_iter)]);
+legend("Param 1", "Param 2", "Param 3");
