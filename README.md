@@ -58,6 +58,11 @@
 
 ## Résultats et apprentissages / Results and learnings
 
+<p align="center">
+  <img src="medias/wlm/wlm_cost_it1000.png" width="70%" alt="Weighted Levenberg–Marquardt cost over iterations">
+</p>
+
+
 **FR —** Les essais montrent une diminution rapide du coût au début de l’optimisation, suivie de fluctuations. Le nombre d’itérations, à lui seul, ne garantit donc pas une meilleure estimation : le rapport observe notamment une instabilité lorsque Levenberg–Marquardt simple est prolongé jusqu’à 5 000 itérations. Le suivi de la convergence et le choix d’un critère d’arrêt sont essentiels.
 
 La pondération fondée sur la variance permet d’étudier l’influence de l’incertitude propre à chaque station, mais n’a pas apporté d’amélioration nette dans les essais rapportés. Une méthode plus élaborée n’est pas automatiquement plus performante : son bénéfice dépend notamment de la qualité des mesures et de l’estimation des variances. Le projet met ainsi en pratique les résidus, la jacobienne, l’amortissement et la pondération, tout en soulignant l’importance de confronter les indicateurs numériques aux trajectoires visualisées.
@@ -65,10 +70,6 @@ La pondération fondée sur la variance permet d’étudier l’influence de l�
 **EN —** The trials show a rapid decrease in cost at the beginning of optimization, followed by fluctuations. Iteration count alone therefore does not guarantee a better estimate: the report notably observes instability when simple Levenberg–Marquardt is run for 5,000 iterations. Monitoring convergence and choosing a stopping criterion are essential.
 
 Variance-based weighting makes it possible to study the influence of each station’s measurement uncertainty, but did not yield a clear improvement in the reported trials. A more sophisticated method is not automatically more effective: its benefit depends, among other things, on measurement quality and variance estimation. The project applies residuals, the Jacobian, damping, and weighting, while highlighting the importance of comparing numerical indicators with the estimated trajectories.
-
-<p align="center">
-  <img src="medias/wlm/wlm_cost_it1000.png" width="70%" alt="Weighted Levenberg–Marquardt cost over iterations">
-</p>
 
 ## Getting started
 
