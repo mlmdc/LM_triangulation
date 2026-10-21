@@ -95,3 +95,7 @@ The script opens figures and prints summary values in the MATLAB command window.
 | `ping_stolp_1.p` – `ping_stolp_3.p` | Compiled measurement functions, one per station. |
 | `medias/` | Existing figures from optimization runs. |
 | `Report.pdf` | Project report. |
+
+## Licence / License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
