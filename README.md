@@ -1,11 +1,11 @@
 # LM Triangulation
 
-🇫🇷 **FR —** Estimer la position d’un téléphone à partir des distances mesurées par trois stations de base, grâce à une méthode d’optimisation non linéaire.<br>
-🇬🇧 **EN —** Estimate a phone’s position from distance measurements taken by three base stations using nonlinear optimization.
+🇫🇷 **FR -** Estimer la position d’un téléphone à partir des distances mesurées par trois stations de base, grâce à une méthode d’optimisation non linéaire.<br>
+🇬🇧 **EN -** Estimate a phone’s position from distance measurements taken by three base stations using nonlinear optimization.
 
 ![Visualisation des stations, de leurs cercles de mesure et d’une trajectoire d’estimation](medias/circles/circles_WLM.png)
 
-[Sommaire / Contents](#sommaire--contents) · [Rapport / Report](Report.pdf)
+[← Back to portfolio](https://github.com/mlmdc) · [Sommaire / Contents](#sommaire--contents) · [Rapport / Report](Report.pdf)
 
 ## Sommaire / Contents
 
@@ -19,15 +19,15 @@
 
 ## Présentation / Overview
 
-🇫🇷 **FR —** Ce projet explore la localisation en deux dimensions d’un téléphone à partir de ses distances à trois stations de base dont les coordonnées sont connues. Il permet d’étudier l’estimation de position à partir de mesures bruitées et de comparer plusieurs variantes de l’algorithme de Levenberg–Marquardt. Il a été réalisé dans le cadre d’un travail sur les méthodes d’optimisation numérique.
+🇫🇷 **FR -** Ce projet explore la localisation en deux dimensions d’un téléphone à partir de ses distances à trois stations de base dont les coordonnées sont connues. Il permet d’étudier l’estimation de position à partir de mesures bruitées et de comparer plusieurs variantes de l’algorithme de Levenberg–Marquardt. Il a été réalisé dans le cadre d’un travail sur les méthodes d’optimisation numérique.
 
-🇬🇧 **EN —** This project explores two-dimensional phone positioning from distances to three base stations with known coordinates. It compares ways to estimate a position from noisy measurements using variants of the Levenberg–Marquardt algorithm. The project was completed as part of a numerical optimization assignment.
+🇬🇧 **EN -** This project explores two-dimensional phone positioning from distances to three base stations with known coordinates. It compares ways to estimate a position from noisy measurements using variants of the Levenberg–Marquardt algorithm. The project was completed as part of a numerical optimization assignment.
 
 ## Problématique et approche / Problem and approach
 
-🇫🇷 **FR —** Chaque mesure définit un cercle autour d’une station ; le téléphone devrait se trouver près de leur intersection. Le bruit empêche généralement une intersection exacte. Le script estime alors la position en minimisant l’écart entre les distances mesurées et calculées. Les mesures sont générées par trois fonctions MATLAB compilées fournies (`ping_stolp_1.p` à `ping_stolp_3.p`).
+🇫🇷 **FR -** Chaque mesure définit un cercle autour d’une station ; le téléphone devrait se trouver près de leur intersection. Le bruit empêche généralement une intersection exacte. Le script estime alors la position en minimisant l’écart entre les distances mesurées et calculées. Les mesures sont générées par trois fonctions MATLAB compilées fournies (`ping_stolp_1.p` à `ping_stolp_3.p`).
 
-🇬🇧 **EN —** Each measurement defines a circle around a station, and the phone should lie near their intersection. Noise usually prevents an exact intersection, so the script estimates the position by minimizing the differences between measured and calculated distances. Measurements come from three supplied compiled MATLAB functions (`ping_stolp_1.p` to `ping_stolp_3.p`).
+🇬🇧 **EN -** Each measurement defines a circle around a station, and the phone should lie near their intersection. Noise usually prevents an exact intersection, so the script estimates the position by minimizing the differences between measured and calculated distances. Measurements come from three supplied compiled MATLAB functions (`ping_stolp_1.p` to `ping_stolp_3.p`).
 
 <p align="center">
   <img src="medias/errors/error_it1000.png" width="70%" alt="Stations, measured-distance circles, and the estimated position trajectory">
@@ -35,13 +35,13 @@
 
 ## Méthodes et fonctionnalités / Methods and features
 
-🇫🇷 **FR —** Le projet met en œuvre et compare plusieurs méthodes d’optimisation :
+🇫🇷 **FR -** Le projet met en œuvre et compare plusieurs méthodes d’optimisation :
 - Calcule les distances prédites entre une position candidate et les stations, puis forme les résidus et la jacobienne utilisés par l’optimisation.
 - Implémente et compare les mises à jour **Gauss–Newton**, **Levenberg–Marquardt** et **Levenberg–Marquardt pondérée**.
 - Utilise un terme d’amortissement dans Levenberg–Marquardt pour stabiliser les pas ; la variante pondérée prend en compte l’inverse des variances estimées par station.
 - Suit la trajectoire estimée, les résidus, le coût et le gradient, et produit des graphiques pour analyser la convergence.
 
-🇬🇧 **EN —** The project implements and compares several optimization methods:
+🇬🇧 **EN -** The project implements and compares several optimization methods:
 - Calculates predicted distances from a candidate position to each station, then forms the residuals and Jacobian used by the optimizer.
 - Implements and compares **Gauss–Newton**, **Levenberg–Marquardt**, and **weighted Levenberg–Marquardt** updates.
 - Uses a damping term in Levenberg–Marquardt to stabilize steps; the weighted variant accounts for the inverse of the estimated per-station variances.
@@ -49,9 +49,9 @@
 
 ## Choix techniques / Technical decisions
 
-🇫🇷 **FR —** Le projet prend la forme d’un script MATLAB, avec des fonctions locales pour la géométrie et les mises à jour numériques. Dans Levenberg–Marquardt, un terme d’amortissement stabilise les pas ; la variante pondérée utilise l’inverse des variances estimées pour chaque station. Les fichiers `.p` étant compilés, leur code de génération des mesures ne peut pas être inspecté ni modifié.
+🇫🇷 **FR -** Le projet prend la forme d’un script MATLAB, avec des fonctions locales pour la géométrie et les mises à jour numériques. Dans Levenberg–Marquardt, un terme d’amortissement stabilise les pas ; la variante pondérée utilise l’inverse des variances estimées pour chaque station. Les fichiers `.p` étant compilés, leur code de génération des mesures ne peut pas être inspecté ni modifié.
 
-🇬🇧 **EN —** The project is a MATLAB script with local functions for geometry and numerical updates. In Levenberg–Marquardt, a damping term stabilizes each step; the weighted variant uses the inverse of the variance estimated for each station. Since the `.p` files are compiled, their measurement-generation code cannot be inspected or modified.
+🇬🇧 **EN -** The project is a MATLAB script with local functions for geometry and numerical updates. In Levenberg–Marquardt, a damping term stabilizes each step; the weighted variant uses the inverse of the variance estimated for each station. Since the `.p` files are compiled, their measurement-generation code cannot be inspected or modified.
 
 ## Résultats et apprentissages / Results and learnings
 
@@ -59,11 +59,11 @@
   <img src="medias/circles/circles_it5000.png" width="70%" alt="Weighted Levenberg–Marquardt cost over iterations">
 </p>
 
-🇫🇷 **FR —** Les essais montrent une baisse rapide du coût au début de l’optimisation, suivie de fluctuations. Le nombre d’itérations ne garantit donc pas, à lui seul, une meilleure estimation : le rapport relève notamment une instabilité lorsque Levenberg–Marquardt simple est prolongé jusqu’à 5 000 itérations. Suivre la convergence et choisir un critère d’arrêt sont essentiels.
+🇫🇷 **FR -** Les essais montrent une baisse rapide du coût au début de l’optimisation, suivie de fluctuations. Le nombre d’itérations ne garantit donc pas, à lui seul, une meilleure estimation : le rapport relève notamment une instabilité lorsque Levenberg–Marquardt simple est prolongé jusqu’à 5 000 itérations. Suivre la convergence et choisir un critère d’arrêt sont essentiels.
 
 La pondération fondée sur la variance permet d’étudier l’influence de l’incertitude propre à chaque station, mais n’a pas apporté d’amélioration nette dans les essais rapportés. Une méthode plus élaborée n’est pas automatiquement plus performante : son bénéfice dépend notamment de la qualité des mesures et de l’estimation des variances. Le projet met ainsi en pratique les résidus, la jacobienne, l’amortissement et la pondération, tout en soulignant l’importance de confronter les indicateurs numériques aux trajectoires visualisées.
 
-🇬🇧 **EN —** The trials show a rapid initial drop in cost, followed by fluctuations. More iterations do not necessarily produce a better estimate: the report observes instability when standard Levenberg–Marquardt runs for 5,000 iterations. Monitoring convergence and choosing a stopping criterion are essential.
+🇬🇧 **EN -** The trials show a rapid initial drop in cost, followed by fluctuations. More iterations do not necessarily produce a better estimate: the report observes instability when standard Levenberg–Marquardt runs for 5,000 iterations. Monitoring convergence and choosing a stopping criterion are essential.
 
 Variance-based weighting makes it possible to study the influence of each station’s measurement uncertainty, but did not yield a clear improvement in the reported trials. A more sophisticated method is not automatically more effective: its benefit depends, among other things, on measurement quality and variance estimation. The project applies residuals, the Jacobian, damping, and weighting, while highlighting the importance of comparing numerical indicators with the estimated trajectories.
 
