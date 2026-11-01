@@ -29,13 +29,14 @@
 
 ## Problématique et approche / Problem and approach
 
-🇫🇷 **FR -** Chaque mesure définit un cercle autour d’une station ; le téléphone devrait se trouver près de leur intersection. Le bruit empêche généralement une intersection exacte. Le script estime alors la position en minimisant l’écart entre les distances mesurées et calculées. Les mesures sont générées par trois fonctions MATLAB compilées fournies (`ping_stolp_1.p` à `ping_stolp_3.p`).
-
-🇬🇧 **EN -** Each measurement defines a circle around a station, and the phone should lie near their intersection. Noise usually prevents an exact intersection, so the script estimates the position by minimizing the differences between measured and calculated distances. Measurements come from three supplied compiled MATLAB functions (`ping_stolp_1.p` to `ping_stolp_3.p`).
-
 <p align="center">
   <img src="medias/errors/error_it1000.png" width="70%" alt="Stations, measured-distance circles, and the estimated position trajectory">
 </p>
+<p><em>FR : Estimation de l'intersection des 3 antennes après 1000 itérations. <br> EN: Estimate of the intersection between the 3 antennas after 1000 iterations.</em></p>
+
+🇫🇷 **FR -** Chaque mesure définit un cercle autour d’une station ; le téléphone devrait se trouver près de leur intersection. Le bruit empêche généralement une intersection exacte. Le script estime alors la position en minimisant l’écart entre les distances mesurées et calculées. Les mesures sont générées par trois fonctions MATLAB compilées fournies (`ping_stolp_1.p` à `ping_stolp_3.p`).
+
+🇬🇧 **EN -** Each measurement defines a circle around a station, and the phone should lie near their intersection. Noise usually prevents an exact intersection, so the script estimates the position by minimizing the differences between measured and calculated distances. Measurements come from three supplied compiled MATLAB functions (`ping_stolp_1.p` to `ping_stolp_3.p`).
 
 ## Méthodes et fonctionnalités / Methods and features
 
