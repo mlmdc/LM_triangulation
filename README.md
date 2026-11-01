@@ -1,9 +1,13 @@
-# LM Triangulation
+<p align="center">
+  <img src="medias/circles/circles_WLM.png" alt="Visualisation des stations, de leurs cercles de mesure et d’une trajectoire d’estimation" width="70%">
+</p>
 
-🇫🇷 **FR -** Estimer la position d’un téléphone à partir des distances mesurées par trois stations de base, grâce à une méthode d’optimisation non linéaire.<br>
-🇬🇧 **EN -** Estimate a phone’s position from distance measurements taken by three base stations using nonlinear optimization.
+<h1 align="center">Flexion XS</h1>
 
-![Visualisation des stations, de leurs cercles de mesure et d’une trajectoire d’estimation](medias/circles/circles_WLM.png)
+<p align="left">
+  <strong>🇬🇧 EN - </strong> Estimate a phone’s position from distance measurements taken by three base stations using nonlinear optimization.<br>
+  <strong>🇫🇷 FR - </strong> Estimer la position d’un téléphone à partir des distances mesurées par trois stations de base, grâce à une méthode d’optimisation non linéaire.
+</p>
 
 [← Back to portfolio](https://mlmdc.github.io/mlmdc_portfolio/) · [Sommaire / Contents](#sommaire--contents) · [Rapport / Report](Report.pdf)
 
